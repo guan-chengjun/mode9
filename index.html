@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>交互式 3D 液压机可视化演示</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="app">
+    <!-- 3D 视口 -->
+    <div id="scene-container"></div>
+
+    <!-- 顶部标题 -->
+    <header id="topbar">
+      <h1>交互式 3D 液压机可视化演示</h1>
+      <p>三梁四柱液压机 · 完整液压工作循环 · 部件结构透视</p>
+    </header>
+
+    <!-- 透视模式状态徽标 -->
+    <div id="xray-badge">X-RAY 透视模式：内部油缸 / 油路 / 活塞可见</div>
+
+    <!-- 模型加载状态 -->
+    <div id="model-status"></div>
+
+    <!-- 操作提示 -->
+    <div id="view-hint">
+      <span>🖱 左键拖拽旋转 · 滚轮缩放 · 右键平移</span>
+      <span>👆 点击各部件查看名称与工作原理</span>
+    </div>
+
+    <!-- 液压控制面板 -->
+    <aside id="control-panel">
+      <h2>液压控制面板</h2>
+
+      <section class="ctrl-group">
+        <h3>运转控制</h3>
+        <div class="btn-row">
+          <button id="btn-start" class="btn btn-primary">▶ 启动</button>
+          <button id="btn-pause" class="btn">⏸ 暂停</button>
+          <button id="btn-reset" class="btn">↺ 重置</button>
+        </div>
+      </section>
+
+      <section class="ctrl-group">
+        <h3>渲染模式</h3>
+        <button id="btn-xray" class="btn btn-block">透视模式</button>
+      </section>
+
+      <section class="ctrl-group">
+        <h3>动画速度</h3>
+        <input type="range" id="speed-range" />
+        <div class="speed-line">
+          <span>慢</span>
+          <strong id="speed-value">1.00×</strong>
+          <span>快</span>
+        </div>
+      </section>
+
+      <section class="ctrl-group">
+        <h3>实时工况</h3>
+        <div class="status-grid">
+          <div class="status-item">
+            <label>当前阶段</label>
+            <strong id="phase-label">已停止</strong>
+          </div>
+          <div class="status-item">
+            <label>系统压力</label>
+            <strong id="pressure-value">0.5 MPa</strong>
+          </div>
+        </div>
+        <ol id="phase-sequence">
+          <li data-phase="idle">待机</li>
+          <li data-phase="fastDown">快速下行</li>
+          <li data-phase="press">慢速加压</li>
+          <li data-phase="dwell">保压</li>
+          <li data-phase="decompress">泄压</li>
+          <li data-phase="return">活塞回升</li>
+        </ol>
+      </section>
+
+      <section class="ctrl-group legend">
+        <h3>油路图例</h3>
+        <ul>
+          <li><i style="background:#ff5533"></i>高压供油</li>
+          <li><i style="background:#ff8822"></i>无杆腔油路</li>
+          <li><i style="background:#ffcc33"></i>有杆腔油路</li>
+          <li><i style="background:#44aaff"></i>低压回油</li>
+          <li><i style="background:#66ccff"></i>泵吸油</li>
+          <li><i style="background:#ff2244"></i>溢流泄油</li>
+        </ul>
+      </section>
+    </aside>
+
+    <!-- 部件信息悬浮面板 -->
+    <div id="info-panel">
+      <button id="info-close" title="关闭">✕</button>
+      <h3 id="info-title">部件名称</h3>
+      <div class="info-block">
+        <h4>作用</h4>
+        <p id="info-role"></p>
+      </div>
+      <div class="info-block">
+        <h4>工作原理</h4>
+        <p id="info-principle"></p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
